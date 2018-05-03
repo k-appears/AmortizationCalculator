@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task srcZip(type: Zip) {
+    from project.rootDir
+    exclude '.idea', 'out', 'build', '*.zip', 'gradlew*', 'gradle/', '.gradle'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.1'
+    compile group: 'ch.obermuhlner', name: 'big-math', version: '2.0.0'
+}
